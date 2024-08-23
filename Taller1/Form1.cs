@@ -1,34 +1,54 @@
-using System.Diagnostics.Eventing.Reader;
-using System.Drawing.Printing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 using Taller1.Clases;
 
 namespace Taller1
 {
     public partial class ControlTareas : Form
     {
-        List<Tarea> tareas = new List<Tarea>();
+        private List<Tarea> tareas = new List<Tarea>();
+        private System.Windows.Forms.Timer clickTimer;
+        private Label clickedLabel;
+
         public ControlTareas()
         {
             InitializeComponent();
 
-            this.KeyPreview = true; 
+            this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(Form1_KeyDown);
             this.AcceptButton = btnAgregar;
+
+            flowPanelTareaPendiente.AllowDrop = true;
+            flowPanelTareaProceso.AllowDrop = true;
+            flowPanelTareaHechas.AllowDrop = true;
+
+            flowPanelTareaPendiente.DragEnter += new DragEventHandler(FlowPanel_DragEnter);
+            flowPanelTareaProceso.DragEnter += new DragEventHandler(FlowPanel_DragEnter);
+            flowPanelTareaHechas.DragEnter += new DragEventHandler(FlowPanel_DragEnter);
+
+            flowPanelTareaPendiente.DragDrop += new DragEventHandler(FlowPanel_DragDrop);
+            flowPanelTareaProceso.DragDrop += new DragEventHandler(FlowPanel_DragDrop);
+            flowPanelTareaHechas.DragDrop += new DragEventHandler(FlowPanel_DragDrop);
+
+            // Configuración del temporizador para diferenciar entre clic y doble clic
+            clickTimer = new System.Windows.Forms.Timer();  
+            clickTimer.Interval = SystemInformation.DoubleClickTime;
+            clickTimer.Tick += ClickTimer_Tick;
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            //Si el txtTarea esta en blanco mostrar mensaje
             if (txtTarea.Text.Length == 0)
             {
-                MessageBox.Show("Debe ingresar un nombre para la tarea ");
+                MessageBox.Show("Debe ingresar un nombre para la tarea");
                 return;
             }
 
             Tarea nuevaTarea = new Tarea(txtTarea.Text, "Pendiente");
             tareas.Add(nuevaTarea);
             this.renderizarTarea();
-            //Limpia el textbox
             txtTarea.Clear();
         }
 
@@ -59,6 +79,27 @@ namespace Taller1
                     tarjeta.BackColor = Color.White;
                 };
 
+                tarjeta.MouseDown += (sender, e) =>
+                {
+                    clickedLabel = tarjeta;
+                    clickTimer.Start();
+                };
+
+                tarjeta.MouseUp += (sender, e) =>
+                {
+                    clickTimer.Stop();
+                };
+
+                tarjeta.MouseMove += (sender, e) =>
+                {
+                    // Si se detecta movimiento, iniciar arrastre y cancelar el temporizador
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        clickTimer.Stop();
+                        clickedLabel.DoDragDrop(clickedLabel, DragDropEffects.Move);
+                    }
+                };
+
                 tarjeta.DoubleClick += (evento, e) =>
                 {
                     Label TareaSeleccionar = evento as Label;
@@ -72,30 +113,6 @@ namespace Taller1
                         }
                     }
                 };
-
-                tarjeta.Click += (evento, e) =>
-                {
-                    Label TareaSeleccionar = evento as Label;
-                    if (TareaSeleccionar != null)
-                    {
-                        Tarea tareaSeleccionada = tareas.FirstOrDefault(t => t.nombre == TareaSeleccionar.Text);
-                        if (tareaSeleccionada != null)
-                        {
-                            // Cambia el estado de la tarea y renderiza nuevamente según el estado actual
-                            switch (tareaSeleccionada.estado)
-                            {
-                                case "Pendiente":
-                                    tareaSeleccionada.estado = "En Proceso";
-                                    break;
-                                case "En Proceso":
-                                    tareaSeleccionada.estado = "Hecha";
-                                    break;
-                            }
-                            renderizarTarea();
-                        }
-                    }
-                };
-
                 // Agrega la tarjeta al panel correspondiente según el estado de la tarea
                 switch (tarea.estado)
                 {
@@ -112,20 +129,58 @@ namespace Taller1
             }
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private void ClickTimer_Tick(object sender, EventArgs e)
         {
-            //Verifica si la tecla presionada es Enter
-            if (e.KeyCode == Keys.Enter)
-            {
-                //Llama al método btnAgregar_Click
-                btnAgregar_Click(this, EventArgs.Empty);
+            clickTimer.Stop();
+            clickedLabel = null;
+        }
 
+        private void FlowPanel_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Label)))
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
             }
         }
 
-        private void btnMover_Click(object sender, EventArgs e)
+        private void FlowPanel_DragDrop(object sender, DragEventArgs e)
         {
+            Label tarjeta = e.Data.GetData(typeof(Label)) as Label;
+            FlowLayoutPanel destino = sender as FlowLayoutPanel;
 
+            if (tarjeta != null && destino != null)
+            {
+                Tarea tareaSeleccionada = tareas.FirstOrDefault(t => t.nombre == tarjeta.Text);
+                if (tareaSeleccionada != null)
+                {
+                    if (destino == flowPanelTareaPendiente)
+                    {
+                        tareaSeleccionada.estado = "Pendiente";
+                    }
+                    else if (destino == flowPanelTareaProceso)
+                    {
+                        tareaSeleccionada.estado = "En Proceso";
+                    }
+                    else if (destino == flowPanelTareaHechas)
+                    {
+                        tareaSeleccionada.estado = "Hecha";
+                    }
+
+                    renderizarTarea();
+                }
+            }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnAgregar_Click(this, EventArgs.Empty);
+            }
         }
     }
 }

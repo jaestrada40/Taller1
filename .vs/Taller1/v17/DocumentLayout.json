@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{A44FDD47-DF00-4093-9945-BE4134C6FEF4}|Taller1\\Taller1.csproj|solutionrelative:taller1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A44FDD47-DF00-4093-9945-BE4134C6FEF4}|Taller1\\Taller1.csproj|e:\\github\\taller1\\taller1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{A44FDD47-DF00-4093-9945-BE4134C6FEF4}|Taller1\\Taller1.csproj|E:\\GitHub\\Taller1\\taller1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A44FDD47-DF00-4093-9945-BE4134C6FEF4}|Taller1\\Taller1.csproj|solutionrelative:taller1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -23,14 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Form1.cs [Dise\u00F1o]",
+              "Title": "Form1.cs [Design]",
               "DocumentMoniker": "E:\\GitHub\\Taller1\\Taller1\\Form1.cs",
               "RelativeDocumentMoniker": "Taller1\\Form1.cs",
-              "ToolTip": "E:\\GitHub\\Taller1\\Taller1\\Form1.cs [Dise\u00F1o]",
-              "RelativeToolTip": "Taller1\\Form1.cs [Dise\u00F1o]",
+              "ToolTip": "E:\\GitHub\\Taller1\\Taller1\\Form1.cs [Design]",
+              "RelativeToolTip": "Taller1\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-22T16:53:39.465Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "Taller1\\Form1.cs",
               "ToolTip": "E:\\GitHub\\Taller1\\Taller1\\Form1.cs",
               "RelativeToolTip": "Taller1\\Form1.cs",
-              "ViewState": "AQIAAD4AAAAAAAAAAAAwwAwAAAAAAAAA",
+              "ViewState": "AQIAAGIAAAAAAAAAAAAwwHwAAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-17T20:53:26.936Z",
               "EditorCaption": ""

@@ -32,3 +32,4 @@ E:\GitHub\Taller1\Taller1\obj\Debug\net8.0-windows\refint\Taller1.dll
 E:\GitHub\Taller1\Taller1\obj\Debug\net8.0-windows\Taller1.pdb
 E:\GitHub\Taller1\Taller1\obj\Debug\net8.0-windows\Taller1.genruntimeconfig.cache
 E:\GitHub\Taller1\Taller1\obj\Debug\net8.0-windows\ref\Taller1.dll
+E:\GitHub\Taller1\Taller1\obj\Debug\net8.0-windows\Taller1.sourcelink.json
